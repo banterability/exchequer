@@ -3,7 +3,9 @@ gulp = require 'gulp'
 nib = require 'nib'
 stylus = require 'gulp-stylus'
 
-gulp.task 'reload', -> browserSync.reload()
+reload = browserSync.reload
+
+gulp.task 'reload', -> reload()
 
 gulp.task 'stylus', ->
   gulp.src 'assets/stylus/*.styl'
