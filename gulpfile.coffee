@@ -8,7 +8,7 @@ reload = browserSync.reload
 gulp.task 'reload', -> reload()
 
 gulp.task 'stylus', ->
-  gulp.src 'assets/stylus/*.styl'
+  gulp.src 'assets/stylus/app.styl'
     .pipe stylus
       use: nib()
       compress: true
