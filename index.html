@@ -16,11 +16,11 @@
     <br>
 
     <label for="card_1_balance">Balance</label>
-    $<input name="card_1_balance" type="number">
+    $<input name="card_1_balance" class="card-balance" type="number">
     <br>
 
     <label for="card_1_limit">Limit</label>
-    $<input name="card_1_limit" type="number">
+    $<input name="card_1_limit" class="card-limit" type="number">
 
   </section>
 
@@ -36,11 +36,11 @@
     <br>
 
     <label for="card_2_balance">Balance</label>
-    $<input name="card_2_balance" type="number">
+    $<input name="card_2_balance" class="card-balance" type="number">
     <br>
 
     <label for="card_2_limit">Limit</label>
-    $<input name="card_2_limit" type="number">
+    $<input name="card_2_limit" class="card-limit" type="number">
 
   </section>
 
@@ -51,7 +51,9 @@
 
     <br />
 
-    <strong>Available Credit:</strong> $<span class="credit_use">TBD</span>
+    <strong>Available Credit:</strong> $<span class="credit_available">TBD</span>
+
+    <br><button>update</button>
   </section>
 
   <script src="public/app.js"></script>
