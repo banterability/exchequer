@@ -44,9 +44,7 @@ updateTotals = ->
 
 balanceEls = -> document.querySelectorAll '.card-balance'
 limitEls = -> document.querySelectorAll '.card-limit'
-buttonEl = document.querySelector('button')
-
-buttonEl.addEventListener 'click', updateTotals, false
 
 watchElements balanceEls, updateTotals
 watchElements limitEls, updateTotals
+document.querySelector('button').addEventListener 'click', addCard, false
