@@ -1,3 +1,11 @@
+initSummaryView = ->
+  availableEl: document.querySelector('.credit_available')
+  countEl: document.querySelector('.credit_count')
+  limitEl: document.querySelector('.credit_limit')
+  utilizationEl: document.querySelector('.credit_used')
+
+summary = initSummaryView()
+
 counter = 0
 
 cardTemplate = ->
@@ -35,10 +43,10 @@ updateTotals = ->
   balances = balanceEls()
   totalBalance += parseInt(el.value, 10) for el in balances
   totalLimit += parseInt(el.value, 10) for el in limitEls()
-  document.querySelector('.credit_count').textContent = balances.length
-  document.querySelector('.credit_limit').textContent = totalLimit
-  document.querySelector('.credit_used').textContent = Math.ceil((totalBalance / totalLimit) * 100)
-  document.querySelector('.credit_available').textContent = totalLimit - totalBalance
+  summary.availableEl.textContent = totalLimit - totalBalance
+  summary.countEl.textContent = balances.length
+  summary.limitEl.textContent = totalLimit
+  summary.utilizationEl.textContent = Math.ceil((totalBalance / totalLimit) * 100)
 
 balanceEls = -> document.querySelectorAll '.card-balance'
 limitEls = -> document.querySelectorAll '.card-limit'
