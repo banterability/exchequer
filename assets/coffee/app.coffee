@@ -13,16 +13,16 @@ cardTemplate = ->
     <br>
 
     <label for="card_#{counter}_apr">APR</label>
-    <input name="card_#{counter}_apr" type="number" step="0.1" value="8.9">%
+    <input name="card_#{counter}_apr" type="number" step="0.1" value="18.1">%
 
     <br>
 
     <label for="card_#{counter}_balance">Balance</label>
-    $<input name="card_#{counter}_balance" class="card-balance" type="number" value="1487.14">
+    $<input name="card_#{counter}_balance" class="card-balance" type="number" value="0">
     <br>
 
     <label for="card_#{counter}_limit">Limit</label>
-    $<input name="card_#{counter}_limit" class="card-limit" type="number" value="3000">
+    $<input name="card_#{counter}_limit" class="card-limit" type="number" value="0">
 """
 
 addCard = ->
