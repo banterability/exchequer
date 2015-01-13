@@ -1,7 +1,3 @@
-watchElements = (els, callback) ->
-  [].forEach.call els, (el) ->
-    el.addEventListener 'input', updateTotals, false
-
 counter = 0
 
 cardTemplate = ->
@@ -29,8 +25,8 @@ addCard = ->
   section = document.createElement('section')
   section.classList.add 'card'
   section.innerHTML = cardTemplate()
+  section.addEventListener 'input', updateTotals, false
   document.querySelector('#cards').appendChild section
-  watchElements([section], updateTotals)
   updateTotals()
 
 updateTotals = ->
