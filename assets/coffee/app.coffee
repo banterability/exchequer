@@ -16,7 +16,8 @@ class CardView extends Backbone.View
   events:
     'input input': 'updateValues'
 
-  model: new Card
+  initialize: ->
+    @model = new Card
 
   render: ->
     @$el.html @template @model.toJSON()
@@ -75,8 +76,6 @@ class SummaryView extends Backbone.View
     newCard.render()
     @collection.push newCard.model
 
-  collection: new Wallet
-
   events:
     'click button': 'addCard'
     'change': 'updateView'
@@ -85,6 +84,7 @@ class SummaryView extends Backbone.View
     console.log('model change!')
 
   initialize: ->
+    @collection = new Wallet
     @listenTo(@collection, 'change', @render)
     @render()
 
