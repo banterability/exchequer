@@ -28,7 +28,7 @@ class CardView extends Backbone.View
 
   template: (context = {}) ->
     """
-      <h1>Card ##{context.cid}</h1>
+      <h2>Card ##{context.cid}</h2>
 
       <span class="field-group">
         <label for="card_#{context.cid}_apr">APR</label>
@@ -37,12 +37,12 @@ class CardView extends Backbone.View
 
       <span class="field-group">
         <label for="card_#{context.cid}_balance">Balance</label>
-        $<input name="card_#{context.cid}_balance" data-attribute="balance" type="number" value="#{context.balance}">
+        $<input name="card_#{context.cid}_balance" data-attribute="balance" type="number" step="100" value="#{context.balance}">
       </span>
 
       <span class="field-group">
         <label for="card_#{context.cid}_limit">Limit</label>
-        $<input name="card_#{context.cid}_limit" data-attribute="limit" type="number" value="#{context.limit}">
+        $<input name="card_#{context.cid}_limit" data-attribute="limit" type="number" step="100" value="#{context.limit}">
       </span>
     """
 
@@ -94,14 +94,27 @@ class SummaryView extends Backbone.View
 
   template: (context = {}) ->
     """
-      <h1>Summary</h1>
-      <strong>Number of Accounts:</strong> <span class="credit_count">#{context.count}</span>
-      <br>
-      <strong>Credit Limit:</strong> $<span class="credit_limit">#{context.limit}</span>
-      <br>
-      <strong>Total Credit Utilization:</strong> <span class="credit_used">#{context.utilization}</span>%
-      <br>
-      <strong>Available Credit:</strong> $<span class="credit_available">#{context.available}</span>
+      <h2>Summary</h2>
+      <span class="field-group">
+        <span class="label">Number of Accounts</span>
+        <span class="display">#{context.count}</span>
+      </span>
+
+      <span class="field-group">
+        <span class="label">Credit Limit</span>
+        <span class="display">$#{context.limit}</span>
+      </span>
+
+      <span class="field-group">
+        <span class="label">Total Credit Utilization</span>
+        <span class="display">#{context.utilization}%</span>
+      </span>
+
+      <span class="field-group">
+        <span class="label">Available Credit</span>
+        <span class="display">$#{context.available}</span>
+      </span>
+
       <br>
       <button>Add Card</button>
     """
