@@ -80,9 +80,6 @@ class SummaryView extends Backbone.View
     'click button': 'addCard'
     'change': 'updateView'
 
-  updateView: ->
-    console.log('model change!')
-
   initialize: ->
     @collection = new Wallet
     @listenTo(@collection, 'change', @render)
