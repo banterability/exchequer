@@ -1,54 +1,110 @@
-initSummaryView = ->
-  availableEl: document.querySelector('.credit_available')
-  countEl: document.querySelector('.credit_count')
-  limitEl: document.querySelector('.credit_limit')
-  utilizationEl: document.querySelector('.credit_used')
+class Card extends Backbone.Model
+  defaults:
+    balance: 0
+    limit: 0
+    rate: 18.9
 
-summary = initSummaryView()
+  toJSON: ->
+    balance: @get 'balance'
+    limit: @get 'limit'
+    rate: @get 'rate'
 
-counter = 0
+class CardView extends Backbone.View
+  className: 'card'
 
-cardTemplate = ->
-  counter += 1
-  """
-    <h1>Card ##{counter}</h1>
-    <input type="text" placeholder="Description">
+  events:
+    'input input': 'updateValues'
 
-    <br>
+  model: new Card
 
-    <label for="card_#{counter}_apr">APR</label>
-    <input name="card_#{counter}_apr" type="number" step="0.1" value="18.1">%
+  render: ->
+    @$el.html @template @model.toJSON()
+    @$el.appendTo '.cards'
+    this
 
-    <br>
+  tagName: 'section'
 
-    <label for="card_#{counter}_balance">Balance</label>
-    $<input name="card_#{counter}_balance" class="card-balance" type="number" value="0">
-    <br>
+  template: (context) ->
+    """
+      <h1>Card ##{@cid}</h1>
 
-    <label for="card_#{counter}_limit">Limit</label>
-    $<input name="card_#{counter}_limit" class="card-limit" type="number" value="0">
-"""
+      <label for="card_#{@cid}_apr">APR</label>
+      <input name="card_#{@cid}_apr" data-attribute="rate" type="number" step="0.1" value="#{context.rate}">%
 
-addCard = ->
-  section = document.createElement('section')
-  section.classList.add 'card'
-  section.innerHTML = cardTemplate()
-  section.addEventListener 'input', updateTotals, false
-  document.querySelector('#cards').appendChild section
-  updateTotals()
+      <br>
 
-updateTotals = ->
-  totalBalance = 0
-  totalLimit = 0
-  balances = balanceEls()
-  totalBalance += parseInt(el.value, 10) for el in balances
-  totalLimit += parseInt(el.value, 10) for el in limitEls()
-  summary.availableEl.textContent = totalLimit - totalBalance
-  summary.countEl.textContent = balances.length
-  summary.limitEl.textContent = totalLimit
-  summary.utilizationEl.textContent = Math.ceil((totalBalance / totalLimit) * 100)
+      <label for="card_#{@cid}_balance">Balance</label>
+      $<input name="card_#{@cid}_balance" data-attribute="balance" type="number" value="#{context.balance}">
+      <br>
 
-balanceEls = -> document.querySelectorAll '.card-balance'
-limitEls = -> document.querySelectorAll '.card-limit'
+      <label for="card_#{@cid}_limit">Limit</label>
+      $<input name="card_#{@cid}_limit" data-attribute="limit" type="number" value="#{context.limit}">
+    """
 
-document.querySelector('button').addEventListener 'click', addCard, false
+  updateValues: (ev) ->
+    attributeName = ev.currentTarget.dataset.attribute
+    attributeValue = ev.currentTarget.value
+    @model.set attributeName, attributeValue
+
+class Wallet extends Backbone.Collection
+  balance: ->
+    @models.reduce (memo, model) ->
+      memo + parseInt(model.get('balance'), 10)
+    , 0
+
+  limit: ->
+    @models.reduce (memo, model) ->
+      memo + parseInt(model.get('limit'), 10)
+    , 0
+
+  model: Card
+
+  toJSON: ->
+    totalBalance = @balance()
+    totalLimit = @limit()
+
+    available: totalBalance
+    count: @length
+    limit: totalLimit
+    utilization: Math.ceil((totalBalance / totalLimit) * 100) || 0
+
+class SummaryView extends Backbone.View
+  addCard: ->
+    newCard = new CardView
+    newCard.render()
+    @collection.push newCard.model
+
+  collection: new Wallet
+
+  events:
+    'click button': 'addCard'
+    'change': 'updateView'
+
+  updateView: ->
+    console.log('model change!')
+
+  initialize: ->
+    @listenTo(@collection, 'change', @render)
+    @render()
+
+  render: ->
+    @$el.html @template @collection.toJSON()
+    this
+
+  template: (context = {}) ->
+    """
+      <h1>Summary</h1>
+      <strong>Number of Accounts:</strong> <span class="credit_count">#{context.count}</span>
+      <br>
+      <strong>Credit Limit:</strong> $<span class="credit_limit">#{context.limit}</span>
+      <br>
+      <strong>Total Credit Utilization:</strong> <span class="credit_used">#{context.utilization}</span>%
+      <br>
+      <strong>Available Credit:</strong> $<span class="credit_available">#{context.available}</span>
+      <br>
+      <button>Add Card</button>
+    """
+
+(->
+  window.Exchequer = new SummaryView el: '.summary'
+)()
