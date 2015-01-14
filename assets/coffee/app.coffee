@@ -1,3 +1,13 @@
+Humanize =
+  currency: (number, symbol = '$') ->
+    numString = number.toString()
+    [dollars, cents] = numString.split('.')
+    dollarStr = dollars.replace(/(.)(?=(.{3})+(?!.))/, "$1,")
+    if cents && parseInt(cents, 10) != 0
+      "$#{dollarStr}.#{cents}"
+    else
+      "$#{dollarStr}"
+
 class Card extends Backbone.Model
   defaults:
     balance: 0
@@ -68,9 +78,9 @@ class Wallet extends Backbone.Collection
     totalBalance = @balance()
     totalLimit = @limit()
 
-    available: totalBalance
+    available: Humanize.currency(totalBalance)
     count: @length
-    limit: totalLimit
+    limit: Humanize.currency(totalLimit)
     utilization: Math.ceil((totalBalance / totalLimit) * 100) || 0
 
 class SummaryView extends Backbone.View
@@ -102,7 +112,7 @@ class SummaryView extends Backbone.View
 
       <span class="field-group">
         <span class="label">Credit Limit</span>
-        <span class="display">$#{context.limit}</span>
+        <span class="display">#{context.limit}</span>
       </span>
 
       <span class="field-group">
@@ -112,7 +122,7 @@ class SummaryView extends Backbone.View
 
       <span class="field-group">
         <span class="label">Available Credit</span>
-        <span class="display">$#{context.available}</span>
+        <span class="display">#{context.available}</span>
       </span>
 
       <br>
