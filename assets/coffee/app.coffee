@@ -6,6 +6,7 @@ class Card extends Backbone.Model
 
   toJSON: ->
     balance: @get 'balance'
+    cid: @cid
     limit: @get 'limit'
     rate: @get 'rate'
 
@@ -24,21 +25,21 @@ class CardView extends Backbone.View
 
   tagName: 'section'
 
-  template: (context) ->
+  template: (context = {}) ->
     """
-      <h1>Card ##{@cid}</h1>
+      <h1>Card ##{context.cid}</h1>
 
-      <label for="card_#{@cid}_apr">APR</label>
-      <input name="card_#{@cid}_apr" data-attribute="rate" type="number" step="0.1" value="#{context.rate}">%
+      <label for="card_#{context.cid}_apr">APR</label>
+      <input name="card_#{context.cid}_apr" data-attribute="rate" type="number" step="0.1" value="#{context.rate}">%
 
       <br>
 
-      <label for="card_#{@cid}_balance">Balance</label>
-      $<input name="card_#{@cid}_balance" data-attribute="balance" type="number" value="#{context.balance}">
+      <label for="card_#{context.cid}_balance">Balance</label>
+      $<input name="card_#{context.cid}_balance" data-attribute="balance" type="number" value="#{context.balance}">
       <br>
 
-      <label for="card_#{@cid}_limit">Limit</label>
-      $<input name="card_#{@cid}_limit" data-attribute="limit" type="number" value="#{context.limit}">
+      <label for="card_#{context.cid}_limit">Limit</label>
+      $<input name="card_#{context.cid}_limit" data-attribute="limit" type="number" value="#{context.limit}">
     """
 
   updateValues: (ev) ->
