@@ -30,17 +30,20 @@ class CardView extends Backbone.View
     """
       <h1>Card ##{context.cid}</h1>
 
-      <label for="card_#{context.cid}_apr">APR</label>
-      <input name="card_#{context.cid}_apr" data-attribute="rate" type="number" step="0.1" value="#{context.rate}">%
+      <span class="field-group">
+        <label for="card_#{context.cid}_apr">APR</label>
+        <input name="card_#{context.cid}_apr" data-attribute="rate" type="number" step="0.1" value="#{context.rate}">%
+      </span>
 
-      <br>
+      <span class="field-group">
+        <label for="card_#{context.cid}_balance">Balance</label>
+        $<input name="card_#{context.cid}_balance" data-attribute="balance" type="number" value="#{context.balance}">
+      </span>
 
-      <label for="card_#{context.cid}_balance">Balance</label>
-      $<input name="card_#{context.cid}_balance" data-attribute="balance" type="number" value="#{context.balance}">
-      <br>
-
-      <label for="card_#{context.cid}_limit">Limit</label>
-      $<input name="card_#{context.cid}_limit" data-attribute="limit" type="number" value="#{context.limit}">
+      <span class="field-group">
+        <label for="card_#{context.cid}_limit">Limit</label>
+        $<input name="card_#{context.cid}_limit" data-attribute="limit" type="number" value="#{context.limit}">
+      </span>
     """
 
   updateValues: (ev) ->
