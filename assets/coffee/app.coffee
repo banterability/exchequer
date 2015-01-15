@@ -1,8 +1,8 @@
 Humanize =
   currency: (number, symbol = '$') ->
     numString = number.toString()
-    [dollars, cents] = numString.split('.')
-    dollarStr = dollars.replace(/(.)(?=(.{3})+(?!.))/, "$1,")
+    [dollars, cents] = numString.split '.'
+    dollarStr = dollars.replace /(.)(?=(.{3})+(?!.))/, "$1,"
     if cents && parseInt(cents, 10) != 0
       "$#{dollarStr}.#{cents}"
     else
@@ -64,12 +64,12 @@ class CardView extends Backbone.View
 class Wallet extends Backbone.Collection
   balance: ->
     @models.reduce (memo, model) ->
-      memo + parseInt(model.get('balance'), 10)
+      memo + parseInt model.get('balance'), 10
     , 0
 
   limit: ->
     @models.reduce (memo, model) ->
-      memo + parseInt(model.get('limit'), 10)
+      memo + parseInt model.get('limit'), 10
     , 0
 
   model: Card
@@ -77,11 +77,12 @@ class Wallet extends Backbone.Collection
   toJSON: ->
     totalBalance = @balance()
     totalLimit = @limit()
-
-    available: Humanize.currency(totalBalance)
-    count: @length
-    limit: Humanize.currency(totalLimit)
-    utilization: Math.ceil((totalBalance / totalLimit) * 100) || 0
+    {
+      available: Humanize.currency totalBalance
+      count: @length
+      limit: Humanize.currency totalLimit
+      utilization: Math.ceil((totalBalance / totalLimit) * 100) || 0
+    }
 
 class SummaryView extends Backbone.View
   addCard: ->
@@ -95,7 +96,7 @@ class SummaryView extends Backbone.View
 
   initialize: ->
     @collection = new Wallet
-    @listenTo(@collection, 'change', @render)
+    @listenTo @collection, 'change', @render
     @render()
 
   render: ->
