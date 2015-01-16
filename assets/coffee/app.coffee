@@ -72,6 +72,9 @@ class Wallet extends Backbone.Collection
       memo + parseInt model.get('limit'), 10
     , 0
 
+  utilization: (balance, limit) ->
+    Math.ceil((balance / limit) * 100) || 0
+
   model: Card
 
   toJSON: ->
@@ -81,7 +84,7 @@ class Wallet extends Backbone.Collection
       available: Humanize.currency totalBalance
       count: @length
       limit: Humanize.currency totalLimit
-      utilization: Math.ceil((totalBalance / totalLimit) * 100) || 0
+      utilization: @utilization totalBalance, totalLimit
     }
 
 class SummaryView extends Backbone.View
