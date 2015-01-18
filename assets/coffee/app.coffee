@@ -73,8 +73,9 @@ class Wallet extends Backbone.Collection
     , 0
 
   utilization: (balance, limit) ->
-    percent = Math.ceil((balance / limit) * 100) || 0
+    percent = Math.ceil((balance / limit) * 100)
     return '--' if percent == Infinity
+    return '--' if _.isNaN(percent)
     percent
 
   model: Card
