@@ -62,6 +62,9 @@ class CardView extends Backbone.View
     @model.set attributeName, attributeValue
 
 class Wallet extends Backbone.Collection
+  available: (balance, limit) ->
+    limit - balance
+
   balance: ->
     @models.reduce (memo, model) ->
       memo + parseInt model.get('balance'), 10
@@ -84,7 +87,7 @@ class Wallet extends Backbone.Collection
     totalBalance = @balance()
     totalLimit = @limit()
     {
-      available: Humanize.currency totalBalance
+      available: Humanize.currency @available(totalBalance, totalLimit)
       count: @length
       limit: Humanize.currency totalLimit
       utilization: @utilization totalBalance, totalLimit
