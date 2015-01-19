@@ -1,12 +1,16 @@
 Humanize =
   currency: (number, symbol = '$') ->
+    isNegative = false
     numString = number.toString()
+    if numString.substr(0, 1) == '-'
+      numString = numString.substr 1
+      isNegative = true
     [dollars, cents] = numString.split '.'
     dollarStr = dollars.replace /(.)(?=(.{3})+(?!.))/, "$1,"
     if cents && parseInt(cents, 10) != 0
-      "$#{dollarStr}.#{cents}"
+      "#{if isNegative then '-' else ''}$#{dollarStr}.#{cents}"
     else
-      "$#{dollarStr}"
+      "#{if isNegative then '-' else ''}$#{dollarStr}"
 
 class Card extends Backbone.Model
   defaults:
