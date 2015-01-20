@@ -74,6 +74,15 @@ class Wallet extends Backbone.Collection
       memo + parseInt model.get('balance'), 10
     , 0
 
+  effectiveRate: ->
+    totalBalance = @balance()
+    @models.reduce (memo, model) ->
+      balance = parseInt model.get('balance'), 10
+      rate = parseFloat model.get('rate')
+      balancePercentage = balance / totalBalance
+      memo + (rate * balancePercentage)
+    , 0
+
   limit: ->
     @models.reduce (memo, model) ->
       memo + parseInt model.get('limit'), 10
@@ -93,6 +102,7 @@ class Wallet extends Backbone.Collection
     {
       available: Humanize.currency @available(totalBalance, totalLimit)
       count: @length
+      effectiveRate: @effectiveRate()
       limit: Humanize.currency totalLimit
       utilization: @utilization totalBalance, totalLimit
     }
@@ -132,6 +142,11 @@ class SummaryView extends Backbone.View
       <span class="field-group">
         <span class="label">Total Credit Utilization</span>
         <span class="display">#{context.utilization}%</span>
+      </span>
+
+      <span class="field-group">
+        <span class="label">Effective APR</span>
+        <span class="display">#{context.effectiveRate}%</span>
       </span>
 
       <span class="field-group">
